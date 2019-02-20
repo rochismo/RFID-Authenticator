@@ -1,6 +1,8 @@
+var express = require('express');
+var app = express();
+
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-
 const serialWindowsPort = "COM3";
 const moment = require('moment');
 var idMachine = '192.168.1.1';
@@ -9,8 +11,14 @@ const port = new SerialPort(serialWindowsPort, {
     baudRate: 9600
 });
 
-
 const parser = port.pipe(new Readline({ delimiter: '\n' }));
+const verify = require('./verify');
+
+
+app.listen(3000, function () {
+    console.log('Example app listening on port 3000!');
+    verify.verifyRFID({machineId: "1"})
+});
 
 
 // Reading the port data:
@@ -26,7 +34,14 @@ parser.on('data', rfid => {
   var date = moment().format("DD-MM-YYYY");
   var hour = moment().format("HH:mm:ss");
 
+<<<<<<< Updated upstream
   var responseObj = new Response (rfid, date, hour, idMachine)
+=======
+  var responseObj = new Response (rfid, date , idMachine)
+
+
+  console.log(responseObj);
+>>>>>>> Stashed changes
 
   console.log(JSON.stringify(responseObj));
 
@@ -40,17 +55,7 @@ function Response (rfid, date, hour, idMachine) {
     this.idMachine = idMachine;
 }
 
-const express = require('express');
-const app = express();
-const axios = require('axios');
 
-
-const verificationServer = "http://localhost:3000/verify";
-
-
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
-});
 
 
 //Verify mock
@@ -61,19 +66,3 @@ app.get('/verify', function (req, res) {
         res.send("no estas verificado")
     }
 });
-
-
-
-//Send http request to verify signin
-function verifyRFID(rfid) {
-    axios.get(verificationServer, {
-        params: rfid
-    })
-        .then(response => {
-            console.log(response.data);
-            return response.data
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
