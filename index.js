@@ -23,19 +23,20 @@ parser.on('data', rfid => {
 
   rfid = rfid.trim();
 
-  var date = moment().format("DD-MM-YYYY:HH:mm:ss");
+  var date = moment().format("DD-MM-YYYY");
+  var hour = moment().format("HH:mm:ss");
 
-  var responseObj = new Response (rfid, date , idMachine)
-
-  console.log(responseObj);
+  var responseObj = new Response (rfid, date, hour, idMachine)
 
   console.log(JSON.stringify(responseObj));
 
 });
 
-function Response (rfid, date, idMachine) {
+// Response Object
+function Response (rfid, date, hour, idMachine) {
     this.rfid = rfid;
     this.date = date;
+    this.hour = hour;
     this.idMachine = idMachine;
 }
 
