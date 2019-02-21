@@ -6,13 +6,12 @@ const Readline = require('@serialport/parser-readline');
 
 const savedata = require('./database.js');
 const verify = require('./verify');
+const configuration = require('./configuration.js');
 
-//Conection with Windows:
-const serialWindowsPort = "COM3";
 const moment = require('moment');
-const idMachine = '192.168.1.1';
+var idMachine = configuration.idMachine;
 
-const port = new SerialPort(serialWindowsPort, {
+const port = new SerialPort(configuration.nfcPort, {
     baudRate: 9600
 });
 
@@ -48,6 +47,7 @@ parser.on('data', async function (rfid) {
     var hour = moment().format("HH:mm:ss");
 
     var responseObj = new Response(rfid, date, hour, idMachine);
+    console.log(responseObj);
 
     savedata.saveDatabase(responseObj);
 

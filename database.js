@@ -1,6 +1,7 @@
+const configuration = require('./configuration.js');
 const mongoose = require('mongoose', {useNewUrlParser: true});
 
-mongoose.connect('mongodb://localhost:27017/signin');
+mongoose.connect(configuration.pathConection);
 
 const Signing = mongoose.model('Signin', {
     idMachine: String,
@@ -17,6 +18,5 @@ module.exports.saveDatabase = function (Signin) {
     signin.date = Signin.date;
     signin.hour = Signin.hour;
     signin.save().then(_ => console.log("Signin saved!"));
-
 }
 
