@@ -7,7 +7,7 @@ const Readline = require('@serialport/parser-readline');
 const savedata = require('./database.js');
 const verify = require('./verify');
 
-//Conection with windows
+//Conection with Windows:
 const serialWindowsPort = "COM3";
 const moment = require('moment');
 var idMachine = '192.168.1.1';
@@ -50,10 +50,10 @@ parser.on('data', async function (rfid) {
     var responseObj = new Response(rfid, date, hour, idMachine);
     console.log(responseObj);
 
-    // savedata.saveDatabase(responseObj);
+    savedata.saveDatabase(responseObj);
 
     let isVerified = await verify.verifyRFID(responseObj);
-    console.log(isVerified);
+
     sendToArduino(isVerified);
     
     console.log(JSON.stringify(responseObj));
