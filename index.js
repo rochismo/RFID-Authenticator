@@ -10,7 +10,7 @@ const verify = require('./verify');
 //Conection with Windows:
 const serialWindowsPort = "COM3";
 const moment = require('moment');
-var idMachine = '192.168.1.1';
+const idMachine = '192.168.1.1';
 
 const port = new SerialPort(serialWindowsPort, {
     baudRate: 9600
@@ -48,7 +48,6 @@ parser.on('data', async function (rfid) {
     var hour = moment().format("HH:mm:ss");
 
     var responseObj = new Response(rfid, date, hour, idMachine);
-    console.log(responseObj);
 
     savedata.saveDatabase(responseObj);
 
