@@ -23,7 +23,7 @@ const parser = port.pipe(new Readline({
 
 
 app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+    console.log('Example App listening on port 3000!');
 });
 
 // Response Object
@@ -39,8 +39,8 @@ port.on("open", () => {
     console.log('Serial Port Opening');
 });
 
-// read the data of the rfid:
-parser.on('data', rfid => {
+// Read the data of the rfid:
+parser.on('data', async function (rfid) {
 
     rfid = rfid.trim();
 
@@ -50,18 +50,31 @@ parser.on('data', rfid => {
     var responseObj = new Response(rfid, date, hour, idMachine);
     console.log(responseObj);
 
-    savedata.saveDatabase(responseObj);
-    verify.verifyRFID(responseObj);
+    // savedata.saveDatabase(responseObj);
 
+    let isVerified = await verify.verifyRFID(responseObj);
+    console.log(isVerified);
+    sendToArduino(isVerified);
+    
     console.log(JSON.stringify(responseObj));
 
 });
 
+function sendToArduino(isVerified) {
+    if (isVerified == true) {
+        port.write('1');
+    } else {
+        port.write('0');
+    }
+    console.log('Sending info out of the serial port');
+}
+
+
 //Verify mock
 app.get('/verify', function (req, res) {
     if (req.query.rfid == 'E0 EE 99 A3') {
-        res.send("verificado")
+        res.send('true')
     } else {
-        res.send("no estas verificado")
+        res.send('false')
     }
 });

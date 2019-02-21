@@ -3,8 +3,9 @@ const axios = require('axios');
 const verificationServer = "http://localhost:3000/verify";
 
 
-module.exports.verifyRFID = function verifyRFID(rfid) {
-    axios.get(verificationServer, {
+module.exports.verifyRFID = async function (rfid) {
+   
+    return axios.get(verificationServer, {
         params: rfid
     })
         .then(response => {
