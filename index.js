@@ -6,13 +6,12 @@ const Readline = require('@serialport/parser-readline');
 
 const savedata = require('./database.js');
 const verify = require('./verify');
+const configuration = require('./configuration.js');
 
-//Conection with Windows:
-const serialWindowsPort = "COM3";
 const moment = require('moment');
-var idMachine = '192.168.1.1';
+var idMachine = configuration.idMachine;
 
-const port = new SerialPort(serialWindowsPort, {
+const port = new SerialPort(configuration.nfcPort, {
     baudRate: 9600
 });
 
