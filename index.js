@@ -9,16 +9,19 @@ const verify = require('./verify');
 const configuration = require('./configuration.js');
 
 const moment = require('moment');
-var idMachine = configuration.idMachine;
+const idMachine = configuration.idMachine;
 
-const port = new SerialPort(configuration.nfcPort, {
+const portNfc = new SerialPort(configuration.nfcPort, {
     baudRate: 9600
 });
 
-const parser = port.pipe(new Readline({
+const parserNfc = portNfc.pipe(new Readline({
     delimiter: '\n'
 }));
 
+const portLcd = new SerialPort(configuration.lcdPort, {
+    baudRate: 9600
+});
 
 
 app.listen(3000, function () {
@@ -34,12 +37,16 @@ function Response(rfid, date, hour, idMachine) {
 }
 
 // Reading the port data:
-port.on("open", () => {
-    console.log('Serial Port Opening');
+portNfc.on("open", () => {
+    console.log('Serial Port NFC Opening');
+});
+
+portLcd.on("open", () => {
+    console.log('Serial Port LCD Opening');
 });
 
 // Read the data of the rfid:
-parser.on('data', async function (rfid) {
+parserNfc.on('data', async function (rfid) {
 
     rfid = rfid.trim();
 
@@ -47,7 +54,6 @@ parser.on('data', async function (rfid) {
     var hour = moment().format("HH:mm:ss");
 
     var responseObj = new Response(rfid, date, hour, idMachine);
-    console.log(responseObj);
 
     savedata.saveDatabase(responseObj);
 
@@ -57,13 +63,15 @@ parser.on('data', async function (rfid) {
     
     console.log(JSON.stringify(responseObj));
 
+    portLcd.write(rfid);
+
 });
 
 function sendToArduino(isVerified) {
     if (isVerified == true) {
-        port.write('1');
+        portNfc.write('1');
     } else {
-        port.write('0');
+        portNfc.write('0');
     }
     console.log('Sending info out of the serial port');
 }
