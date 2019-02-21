@@ -29,10 +29,11 @@ app.listen(3000, function () {
 });
 
 // Response Object
-function Response(rfid, date, hour, idMachine) {
+function Response(rfid, date, hour, weekDay, idMachine) {
     this.rfid = rfid;
     this.date = date;
     this.hour = hour;
+    this.weekDay = weekDay;
     this.idMachine = idMachine;
 }
 
@@ -50,10 +51,11 @@ parserNfc.on('data', async function (rfid) {
 
     rfid = rfid.trim();
 
-    var date = moment().format("DD-MM-YYYY");
+    var date = moment().format("YYYY-DD-MM");
     var hour = moment().format("HH:mm:ss");
+    var weekDay = moment().format("dddd");
 
-    var responseObj = new Response(rfid, date, hour, idMachine);
+    var responseObj = new Response(rfid, date, hour, weekDay, idMachine);
 
     savedata.saveDatabase(responseObj);
 
