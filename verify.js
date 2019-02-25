@@ -1,11 +1,11 @@
 //Send http request to verify signin
 const axios = require('axios');
-const verificationServer = "http://localhost:3000/verify";
+const verificationServer = require('./constants');
 
 
 module.exports.verifyRFID = async function (rfid) {
-   
-    return axios.get(verificationServer, {
+
+    return axios.get(verificationServer.urlVerificationServer, {
         params: rfid
     })
         .then(response => {

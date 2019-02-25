@@ -1,17 +1,16 @@
-var express = require('express');
-var app = express();
 
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-
+require('colors');
 const savedata = require('./database.js');
 const verify = require('./verify');
-const configuration = require('./configuration.js');
+const constants = require('./constants.js');
+require('./mock.js');
 
 const moment = require('moment');
-const idMachine = configuration.idMachine;
+const idMachine = constants.idMachine;
 
-const portNfc = new SerialPort(configuration.nfcPort, {
+const portNfc = new SerialPort(constants.nfcPort, {
     baudRate: 9600
 });
 
@@ -19,13 +18,9 @@ const parserNfc = portNfc.pipe(new Readline({
     delimiter: '\n'
 }));
 
-const portLcd = new SerialPort(configuration.lcdPort, {
+
+const portLcd = new SerialPort(constants.lcdPort, {
     baudRate: 9600
-});
-
-
-app.listen(3000, function () {
-    console.log('Example App listening on port 3000!');
 });
 
 // Response Object
@@ -38,12 +33,12 @@ function Response(rfid, date, hour, weekDay, idMachine) {
 }
 
 // Reading the port data:
-portNfc.on("open", () => {
-    console.log('Serial Port NFC Opening');
+portNfc.on('open', () => {
+    console.log('[serialport] Serial Port NFC Opening' .cyan);
 });
 
-portLcd.on("open", () => {
-    console.log('Serial Port LCD Opening');
+portLcd.on('open', () => {
+    console.log('[serialport] Serial Port LCD Opening' .cyan);
 });
 
 // Read the data of the rfid:
@@ -51,11 +46,11 @@ parserNfc.on('data', async function (rfid) {
 
     rfid = rfid.trim();
 
-    var date = moment().format("YYYY-DD-MM");
-    var hour = moment().format("HH:mm:ss");
-    var weekDay = moment().format("dddd");
+    let date = moment().format("YYYY-DD-MM");
+    let hour = moment().format("HH:mm:ss");
+    let weekDay = moment().format("dddd");
 
-    var responseObj = new Response(rfid, date, hour, weekDay, idMachine);
+    let responseObj = new Response(rfid, date, hour, weekDay, idMachine);
 
     savedata.saveDatabase(responseObj);
 
@@ -77,13 +72,3 @@ function sendToArduino(isVerified) {
     }
     console.log('Sending info out of the serial port');
 }
-
-
-//Verify mock
-app.get('/verify', function (req, res) {
-    if (req.query.rfid == 'E0 EE 99 A3') {
-        res.send('true')
-    } else {
-        res.send('false')
-    }
-});

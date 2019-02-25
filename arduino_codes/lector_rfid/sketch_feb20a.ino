@@ -9,6 +9,8 @@
  
 const int RST_PIN = 9;            // Pin 9 para el reset del RC522
 const int SS_PIN = 10;            // Pin 10 para el SS (SDA) del RC522
+const int GREEN_LED = 8;
+const int RED_LED = 7;
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Crear instancia del MFRC522
 const byte DATA_MAX_SIZE = 32;
 char data[DATA_MAX_SIZE];   // an array to store the received data
@@ -31,21 +33,20 @@ void setup()
  
 void loop()
 {
-  
-if (Serial.available() > 0) {
- int input = Serial.parseInt();
- // Input si es 1 está verificado o 0 si no está verificado:
- if (input == 1) {
-    digitalWrite(4, HIGH);
-    delay(100);
-    digitalWrite(4, LOW);
-  } else {
-    digitalWrite(3, HIGH);
-    delay(100);
-    digitalWrite(3, LOW);
-  }
- 
- }
+
+   if (Serial.available() > 0) {
+   int input = Serial.parseInt();
+   // Input si es 1 está verificado o 0 si no está verificado:
+      if (input == 1) {
+            digitalWrite(GREEN_LED, HIGH);
+            delay(100);
+            digitalWrite(GREEN_LED, LOW);
+      } else {
+         digitalWrite(RED_LED, HIGH);
+         delay(100);
+         digitalWrite(RED_LED, LOW);
+      }
+   }
    // Detectar tarjeta:
    if (mfrc522.PICC_IsNewCardPresent())
    {
@@ -53,7 +54,7 @@ if (Serial.available() > 0) {
       {
          printArray(mfrc522.uid.uidByte, mfrc522.uid.size);
          Serial.println();
- 
+
          // Finalizar lectura actual
          mfrc522.PICC_HaltA();
       }
