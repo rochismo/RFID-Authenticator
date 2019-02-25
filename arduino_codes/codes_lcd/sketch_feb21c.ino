@@ -18,18 +18,14 @@ void setup() {
 void loop() {
 
   String receivedString;     // read char from serial port    
- 
+
   if (Serial.available() > 0) {
     
     receivedString = Serial.readString();
-    
-      digitalWrite(7, HIGH);
-      delay(100);
-      digitalWrite(7, LOW);
 
     // Limpiamos la pantalla
     lcd.clear();
- 
+
     // Situamos el cursor en la columna 0 fila 0
     lcd.setCursor(0,0); 
     
@@ -40,10 +36,9 @@ void loop() {
     
     // Limpiamos la pantalla
     lcd.clear();
- 
   
     }
-   
+
   }
   
   

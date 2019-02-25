@@ -1,7 +1,8 @@
-const configuration = require('./configuration.js');
-const mongoose = require('mongoose', {useNewUrlParser: true});
+const constants = require('./constants.js');
+const mongoose = require('mongoose');
+require('colors');
 
-mongoose.connect(configuration.pathConection);
+mongoose.connect(constants.pathConection, {useNewUrlParser: true});
 
 const Signing = mongoose.model('Signin', {
     idMachine: String,
@@ -10,13 +11,13 @@ const Signing = mongoose.model('Signin', {
     hour: String
 });
 
-module.exports.saveDatabase = function (Signin) {
-    console.log("Saving signin");
-    let signin = new Signing()
+module.exports.saveSignin = function (Signin) {
+    console.log("[database] Saving signin" .green);
+    let signin = new Signing();
     signin.idMachine = Signin.idMachine;
     signin.rfid = Signin.rfid;
     signin.date = Signin.date;
     signin.hour = Signin.hour;
-    signin.save().then(_ => console.log("Signin saved!"));
+    signin.save().then(_ => console.log("[database] Signin saved!" .green));
 }
 
