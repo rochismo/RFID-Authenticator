@@ -6,12 +6,13 @@ const verificationServer = require('./constants');
 module.exports.verifyRFID = async function (rfid) {
 
     return axios.get(verificationServer.urlVerificationServer, {
-        params: JSON.stringify(rfid)
+        params: rfid
     })
         .then(response => {
             console.log(response.data);
             return response.data
         })
+
         .catch(error => {
             console.log(error);
         });

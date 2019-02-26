@@ -54,9 +54,9 @@ parserNfc.on('data', async function (rfid) {
     let responseObj = new Response(rfid, date, hour, weekDay, idMachine);
 
     database.saveSignin(responseObj);
-
+    console.log(responseObj);
     let isVerified = await verify.verifyRFID(responseObj);
-
+   
     sendToArduino(isVerified);
     
     console.log(JSON.stringify(responseObj));
