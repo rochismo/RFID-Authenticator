@@ -17,28 +17,44 @@ void setup() {
 
 void loop() {
 
-  String receivedString;     // read char from serial port    
+  String receivedString; // read char from serial port    
+  String rfid, txt;
+  boolean found = false;
 
   if (Serial.available() > 0) {
     
     receivedString = Serial.readString();
 
+     for (int i = 0; i < receivedString.length(); i++) {
+        if (receivedString.substring(i, i+1) == "-") {
+          rfid = receivedString.substring(0, i);
+          txt = receivedString.substring(i+1);
+          found = true;
+          break;
+        }
+      }
+
     // Limpiamos la pantalla
     lcd.clear();
 
     // Situamos el cursor en la columna 0 fila 0
-    lcd.setCursor(0,0); 
+    lcd.setCursor(0,1); 
     
     // Escribimos
-    lcd.print(receivedString);
-
+    if(found){
+      lcd.print(rfid);
+      lcd.setCursor(0, 0);
+      lcd.print(txt);
+    } else {
+      lcd.print(receivedString);
+    }
+    
     delay(3000); 
     
     // Limpiamos la pantalla
     lcd.clear();
   
     }
+}
 
-  }
-  
   

@@ -8,6 +8,7 @@ const moment = require('moment');
 require('colors');
 require('./mock.js');
 
+let insertMode = false;
 
 const idMachine = constants.idMachine;
 
@@ -57,19 +58,36 @@ parserNfc.on('data', async function (rfid) {
     console.log(responseObj);
     let isVerified = await verify.verifyRFID(responseObj);
    
-    sendToArduino(isVerified);
+    sendToArduino(isVerified,rfid);
     
     console.log(JSON.stringify(responseObj));
 
-    portLcd.write(rfid);
-
 });
 
-function sendToArduino(isVerified) {
-    if (isVerified == true) {
+function sendToArduino(isVerified,rfid) {
+
+    if (insertMode && isVerified != 2) {
         portNfc.write('1');
+        portLcd.write(rfid+"-Mode insercio");
+
+    } else if (!insertMode && isVerified == 2) {
+        insertMode = true;
+        portNfc.write('2');
+        portLcd.write(rfid+"-Mode insercio");
+
+    } else if (insertMode && isVerified == 2) {
+        insertMode = false;
+        portNfc.write('2');
+        portLcd.write("Fi Mode insercio");
+ 
     } else {
-        portNfc.write('0');
+        if (isVerified == 1) {
+            portNfc.write('1');
+        } else {
+            portNfc.write('0');
+        }
+        portLcd.write(rfid);
+
     }
     console.log('[serialport] Sending info out of the serial port' .cyan);
 }
