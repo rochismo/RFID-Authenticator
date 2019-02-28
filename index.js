@@ -7,6 +7,7 @@ const constants = require('./constants.js');
 const moment = require('moment');
 require('colors');
 require('./mock.js');
+require('./authServer.js');
 
 let insertMode = false;
 
