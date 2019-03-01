@@ -5,6 +5,11 @@ const database = require('./database.js');
 const verify = require('./verify');
 const constants = require('./constants.js');
 const moment = require('moment');
+
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 require('colors');
 require('./mock.js');
 require('./authServer.js');
@@ -34,6 +39,14 @@ function Response(rfid, date, hour, weekDay, idMachine) {
     this.weekDay = weekDay;
     this.idMachine = idMachine;
 }
+
+http.listen(3002, function(){
+    console.log('socket listening on *:3002');
+});
+
+io.on('connection', function(socket){
+    console.log('a user connected');
+});
 
 // Reading the port data:
 portNfc.on('open', () => {
@@ -67,20 +80,27 @@ parserNfc.on('data', async function (rfid) {
 
 function sendToArduino(isVerified,rfid) {
 
+   
+    //Si esta en mode inserció enviam el codi rfid a la vista
     if (insertMode && isVerified != 2) {
         portNfc.write('1');
         portLcd.write(rfid+"-Mode insercio");
+        io.emit('rfid', rfid);
 
+    //Activam el mode insercio amb la targeta "admin"
     } else if (!insertMode && isVerified == 2) {
         insertMode = true;
         portNfc.write('2');
         portLcd.write(rfid+"-Mode insercio");
 
+    //Desactivam mode insercio amb la targeta "admin"
     } else if (insertMode && isVerified == 2) {
         insertMode = false;
         portNfc.write('2');
         portLcd.write("Fi Mode insercio");
  
+    //Si el mode insercio esta desactivat i reb una targeta normal
+    //s'efectuara el fichatge normal
     } else {
         if (isVerified == 1) {
             portNfc.write('1');
