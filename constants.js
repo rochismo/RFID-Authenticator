@@ -21,17 +21,14 @@ exports.lcdPort = lcdPort;
 exports.idMachine = idMachine;
 exports.urlVerificationServer = urlVerificationServer;
 
-//Configuration server LoginOauth-Verify
+//Configuration server LoginOauth-VerifyToken
 
 const PORTSERVER=3001;
 
 exports.PORTSERVER= PORTSERVER;
 
-exports.LogFileName='AuthLog.log';
-exports.LogFileRoute='./logs/';
-
-exports.clientID= "1032746015325-2gjh5pee6ajcg0lni9adh53ih4mn489v.apps.googleusercontent.com",
-exports.clientSecret  = "nix9S2Ez1G7UO_venNiSGl5i",
-exports.callbackURL ="http://localhost:"+PORTSERVER+"/auth/google/callback"
+exports.CLIENT_ID= "",
+exports.CLIENT_SECRET  = "",
+exports.CALLBACK_URL ="http://localhost:"+PORTSERVER+"/auth/google/callback"
 exports.SECRET_JWT="jwtClave";
 exports.TOKEN_EXPIRE=60*60;
