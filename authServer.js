@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 //Paspport Config
 require('./config/passport.js');
 
+//Without this you can't get data of request
 app.use(bodyParser.urlencoded({ extended: false }))
 
 //Start passport

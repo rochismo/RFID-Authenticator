@@ -24,6 +24,7 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+//Local Strategy, connect to login server
 passport.use(new LocalStrategy(
   {usernameField: 'email',
   passwordField: 'password'},
@@ -37,7 +38,7 @@ passport.use(new LocalStrategy(
       return next(null, userData);
 }));
 
-
+//Async function, send username and password to Login server an recibe a user
 async function requestLogin(infouser) {
   let response = await fetch(constants.URL_LOGIN_GROC,{
         method: 'POST',
