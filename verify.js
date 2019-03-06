@@ -1,19 +1,23 @@
 //Send http request to verify signin
 const axios = require('axios');
 const verificationServer = require('./constants');
+const fetch = require('node-fetch');
 
 
 module.exports.verifyRFID = async function (rfid) {
 
-    return axios.get(verificationServer.urlVerificationServer, {
-        params: rfid
-    })
-        .then(response => {
-            console.log(response.data);
-            return response.data
+    fetch(verificationServer.urlVerificationServer, {
+         method: 'POST',
+          body: JSON.stringify(rfid),
+          headers: {
+                'Content-Type': 'application/json' 
+          }
         })
-
-        .catch(error => {
-            console.log(error);
-        });
+    .then(response => {
+        console.log(response.data);
+        return response.data
+    })
+    .catch(error => {
+        console.log(error);
+    });
 }

@@ -11,7 +11,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 require('colors');
-require('./mock.js');
 require('./authServer.js');
 
 let insertMode = false;
@@ -61,6 +60,8 @@ portLcd.on('open', () => {
 parserNfc.on('data', async function (rfid) {
 
     rfid = rfid.trim();
+
+    moment.locale('es');
 
     let date = moment().format("YYYY-DD-MM");
     let hour = moment().format("HH:mm:ss");
