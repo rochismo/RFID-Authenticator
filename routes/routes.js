@@ -19,11 +19,9 @@ path.post('/verify', function (req, res) {
               }
             });
           } catch (err) {
-          console.log(err);
           res.send(400);
         }
       } else {
-        console.log("no token");
         res.send(400);
       }
     });
@@ -44,7 +42,20 @@ path.post('/verify', function (req, res) {
     // Successful authentication, send Token.
       res.json({ token: token });
     });
-
-    module.exports = path;
+    
+    path.post('/local', passport.authenticate('local', { session: false }), function(req,res){
+      if(!req.user===false){
+        let token = jwt.sign({
+          profile : req.user
+        }, constants.SECRET_JWT, { expiresIn: constants.TOKEN_EXPIRE })
+    
+        //res.locals.token=token;
+        res.json({ token: token });
+      }else{
+        return res.json({ success: false, message: 'Failed to authenticate token.' });   
+      }
+     
+  });
+  module.exports = path;
 
   
