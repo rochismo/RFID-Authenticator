@@ -14,8 +14,8 @@ module.exports.verifyRFID = async function (rfid) {
           }
         })
     .then(response => {
-        console.log(response.data);
-        return response.data
+        console.log(response);
+        return response
     })
     .catch(error => {
         console.log(error);

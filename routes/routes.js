@@ -7,6 +7,7 @@ const path = express.Router();
 //End Point with verify Logic
 path.post('/verify', function (req, res) {
 
+  if (req.headers.authorization) {
     let token = req.headers.authorization.split(" ")[1];
     if (token) {
       try {
@@ -24,6 +25,10 @@ path.post('/verify', function (req, res) {
       } else {
         res.send(400);
       }
+  } else {
+    res.send(401);
+  }
+    
     });
   
   //End Point with Google Auth

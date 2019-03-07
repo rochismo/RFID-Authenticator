@@ -13,7 +13,7 @@ const lcdPort = 'COM4';
 const idMachine = '192.168.1.1';
 
 // Url of the Verification Server
-const urlVerificationServer = "http://172.16.7.230:8081/validate";
+const urlVerificationServer = "http://172.16.7.228:8081/validate";
 
 exports.pathConection = pathConection;
 exports.nfcPort = nfcPort;
