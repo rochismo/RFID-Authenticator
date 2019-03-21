@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const passport = require('passport');
-const constants = require('./constants.js');
+const {PORTSERVER} = require('./constants.js');
 const routes = require('./routes/routes.js');
 const bodyParser = require('body-parser');
 //Paspport Config
@@ -16,6 +16,6 @@ app.use(passport.initialize());
 app.use('/auth',routes);
 
 
-app.listen(constants.PORTSERVER, function () {
-  console.log('AuthServer listening on port:'+constants.PORTSERVER);
+app.listen(PORTSERVER, function () {
+  console.log('AuthServer listening on port:'+PORTSERVER);
 });

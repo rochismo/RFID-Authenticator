@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const constants = require('../constants.js');
+const {CLIENT_ID, CLIENT_SECRET, CALLBACK_URL, URL_LOGIN_GROC} = require('../constants.js');
 const LocalStrategy = require('passport-local').Strategy;
 const fetch = require("node-fetch");
 
@@ -15,9 +15,9 @@ passport.deserializeUser(function (obj, cb) {
 
 //Strategy Config Google Auth
 passport.use(new GoogleStrategy({
-    clientID: constants.CLIENT_ID,
-    clientSecret: constants.CLIENT_SECRET,
-    callbackURL: constants.CALLBACK_URL
+    clientID: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+    callbackURL: CALLBACK_URL
   },
   function (accessToken, refreshToken, profile, cb) {
     return cb(null, profile);
@@ -30,18 +30,18 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
   },
   async function (userid, password, next) {
-    const date = JSON.stringify({
+    const data = JSON.stringify({
       "username": userid,
       "password": password
     });
 
-    let userData = await requestLogin(date);
+    let userData = await requestLogin(data);
     return next(null, userData);
   }));
 
 //Async function, send username and password to Login server an recibe a user
 async function requestLogin(infouser) {
-  let response = await fetch(constants.URL_LOGIN_GROC, {
+  let response = await fetch(URL_LOGIN_GROC, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

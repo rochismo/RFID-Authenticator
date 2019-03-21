@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const constants = require('../constants.js');
+const {SECRET_JWT, TOKEN_EXPIRE} = require('../constants.js');
 const jwt = require('jsonwebtoken');
 const path = express.Router();
 
@@ -35,7 +35,7 @@ path.post('/verify', function (req, res) {
   }
 
   // Verify token
-  jwt.verify(token, constants.SECRET_JWT, handleToken);
+  jwt.verify(token, SECRET_JWT, handleToken);
 
 });
 
@@ -53,8 +53,8 @@ path.get('/google/callback',
   function (req, res) {
     let token = jwt.sign({
       profile: req.user,
-    }, constants.SECRET_JWT, {
-      expiresIn: constants.TOKEN_EXPIRE
+    }, SECRET_JWT, {
+      expiresIn: TOKEN_EXPIRE
     })
     // Successful authentication, send Token.
     res.json({
@@ -74,8 +74,8 @@ path.post('/local', passport.authenticate('local', {
   
   const token = jwt.sign({
     profile: req.user
-  }, constants.SECRET_JWT, {
-    expiresIn: constants.TOKEN_EXPIRE
+  }, SECRET_JWT, {
+    expiresIn: TOKEN_EXPIRE
   })
 
   //res.locals.token=token;

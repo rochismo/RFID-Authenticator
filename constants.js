@@ -1,14 +1,7 @@
+// TODO: Change endpoints accordingly to the network's addresses
+
 // Connection with database./constants.js/index.js
 const pathConection = 'mongodb://localhost:27017/signin';
-
-// Connection with nfc arduino port
-// In Linux the port would look similar to this --> '/dev/ttyACM0'
-const nfcPort = 'COM3';
-
-// Connection with lcd arduino port
-// In Linux the port would look similar to this --> '/dev/ttyACM0'
-const lcdPort = 'COM4';
-
 // Raspberry identifier
 const idMachine = '192.168.1.1';
 
@@ -16,8 +9,6 @@ const idMachine = '192.168.1.1';
 const urlVerificationServer = "http://172.16.7.228:8081/validate";
 
 exports.pathConection = pathConection;
-exports.nfcPort = nfcPort;
-exports.lcdPort = lcdPort;
 exports.idMachine = idMachine;
 exports.urlVerificationServer = urlVerificationServer;
 

@@ -1,8 +1,8 @@
-const constants = require('./constants.js');
+const {pathConnection} = require('./constants.js');
 const mongoose = require('mongoose');
 require('colors');
 
-mongoose.connect(constants.pathConection, {useNewUrlParser: true});
+mongoose.connect(pathConection, {useNewUrlParser: true});
 
 const Signing = mongoose.model('Signin', {
     idMachine: String,
